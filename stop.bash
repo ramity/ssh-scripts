@@ -34,4 +34,3 @@ else
   fi
 fi
 
-read

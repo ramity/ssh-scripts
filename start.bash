@@ -27,5 +27,3 @@ else
   ssh-add $SSH_KEYS
   echo "INFO: SSH-agent startup complete."
 fi
-
-read
