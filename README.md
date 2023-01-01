@@ -9,13 +9,13 @@ cd ~/.ssh/
 (ssh)
 
 ```
-git clone git@github.com:ramity/ssh-scripts.git
+git clone git@github.com:ramity/ssh-scripts.git scripts
 ```
 
 (https)
 
 ```
-git clone https://github.com/ramity/ssh-scripts.git
+git clone https://github.com/ramity/ssh-scripts.git scripts
 ```
 
 - Ensure start.bash and stop.bash are executable
@@ -41,4 +41,25 @@ chmod +x ./stop.bash
 
 ```
 . stop.bash
+```
+
+# TL;DR setup
+
+#### Setup
+
+```
+git clone git@github.com:ramity/ssh-scripts.git ~/.ssh/scripts
+chmod +x ~/.ssh/scripts/*.bash
+```
+
+#### Start:
+
+```
+. ~/.ssh/scripts/start.bash
+```
+
+#### Stop:
+
+```
+. ~/.ssh/scripts/stop.bash
 ```
