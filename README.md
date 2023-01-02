@@ -101,7 +101,7 @@ chmod +x ~/.ssh/scripts/stop.bash
 
 > "Putting a repo in my .ssh directory seems kind of fishy."
 
-- Put it elsewhere then. I like having it in my .ssh repo, but because the SSH_AGENT and SSH_KEYS variables are specified relative to the user directory, you can really place the scripts wherever you like.
+- Put it elsewhere then. I like having it in my .ssh directory, but because the SSH_AGENT and SSH_KEYS variables are specified relative to the user directory, you can really place the scripts wherever you like.
 
 > "I'm still a bit weary of giving a repo/scripts access to my ssh keys."
 
