@@ -33,4 +33,3 @@ else
     echo "INFO: SSH-agent shutdown complete."
   fi
 fi
-
