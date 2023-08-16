@@ -1,35 +1,35 @@
 #!/bin/bash
 
-# define required ssh agent vars
-SSH_AGENT_FILE=~/.ssh/agent
+# Define vars
+SSH_AGENT_FILE=~/.ssh/scripts/agent
+SSH_SESSIONS_FILE=~/.ssh/scripts/sessions
 
-echo "INFO: Checking for running SSH-agent process."
+# Get, decrement, store, and update the number of ssh sessions
+updated_sessions=$(($(<"$SSH_SESSIONS_FILE") - 1))
+echo "$updated_sessions" > "$SSH_SESSIONS_FILE"
+
+# Exit script early if there are still more sessions
+if [ "$updated_sessions" -ne 0 ]; then
+  exit
+fi
+
+# Check if there is a ssh-agent process running
 if [ $(ps ax | grep [s]sh-agent | wc -l) -gt 0 ] ; then
-  echo "INFO: Running SSH-agent process was detected."
-  echo "INFO: Checking for SSH-agent file."
+
+  # Check if there exists a ssh-agent file
   if [ -e $SSH_AGENT_FILE ] ; then
-    echo "INFO: SSH-agent file was detected."
-    echo "INFO: Loading SSH-agent context."
     source $SSH_AGENT_FILE
-    echo "INFO: Removing SSH-agent file."
     rm $SSH_AGENT_FILE
-    echo "INFO: Closing SSH-agent process."
     ssh-agent -k
-    echo "INFO: SSH-agent shutdown complete."
+    echo "Removed agent file and killed ssh-agent process"
+
+  # Close dangling ssh-agent process
   else
-    echo "ERROR: Dangling SSH-agent process detected."
-    echo "ERROR: Resolve by manually stopping SSH-agent process."
+    echo "Closing dangling ssh-agent process."
+    ssh-agent -k
   fi
 else
-  echo "INFO: No running SSH-agent detected."
-  echo "INFO: Checking for SSH-agent file."
   if [ -e $SSH_AGENT_FILE ] ; then
-    echo "INFO: SSH-agent file was detected with no running process."
-    echo "INFO: Removing dangling SSH-agent file."
     rm $SSH_AGENT_FILE
-    echo "INFO: SSH-agent shutdown complete."
-  else
-    echo "INFO: SSH-agent file was not detected."
-    echo "INFO: SSH-agent shutdown complete."
   fi
 fi

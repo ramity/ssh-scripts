@@ -15,7 +15,7 @@
 
 ```
 git clone git@github.com:ramity/ssh-scripts.git ~/.ssh/scripts
-chmod +x ~/.ssh/scripts/*.bash
+chmod 600 ~/.ssh/scripts/*.bash
 ```
 
 #### Start:
@@ -61,8 +61,8 @@ git clone https://github.com/ramity/ssh-scripts.git ~/.ssh/scripts
 - Ensure start.bash and stop.bash are executable
 
 ```
-chmod +x ~/.ssh/scripts/start.bash
-chmod +x ~/.ssh/scripts/stop.bash
+chmod 600 ~/.ssh/scripts/start.bash
+chmod 600 ~/.ssh/scripts/stop.bash
 ```
 
 # Checks

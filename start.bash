@@ -1,29 +1,42 @@
 #!/bin/bash
 
-# define required ssh agent vars
-SSH_AGENT_FILE=~/.ssh/agent
+# Define vars
+SSH_AGENT_FILE=~/.ssh/scripts/agent
 SSH_KEYS=~/.ssh/*_key
+SSH_SESSIONS_FILE=~/.ssh/scripts/sessions
 
-echo "INFO: Checking for running SSH-agent process."
+# Check if there is a ssh-agent process running
 if [ $(ps ax | grep [s]sh-agent | wc -l) -gt 0 ] ; then
-  echo "INFO: Running SSH-agent process was detected."
-  echo "INFO: Skipping SSH-agent startup."
-  echo "INFO: Checking for SSH-agent file."
+
+  # Check if there exists a ssh-agent file
   if [ -e $SSH_AGENT_FILE ] ; then
-    echo "INFO: SSH-agent file was detected."
-    echo "INFO: Loading SSH-agent context."
     source $SSH_AGENT_FILE
-    echo "INFO: SSH-agent startup complete."
+    tput setaf 2
+    echo "Attached to existing ssh-agent process"
+
+  # Notify user there is a dangling ssh-agent process
   else
-    echo "ERROR: Dangling SSH-agent process detected."
-    echo "ERROR: Resolve by manually stopping SSH-agent process."
+    tput setaf 1
+    echo "ERROR: $(tput setaf 3)Dangling SSH-agent process detected."
+    tput setaf 1
+    echo "ERROR: $(tput setaf 3)Resolve by relogging."
   fi
+
+# Go through the process of starting, attaching, and adding keys to a ssh-agent process
 else
-  echo "INFO: Creating SSH-agent process."
-  ssh-agent > $SSH_AGENT_FILE
-  echo "INFO: Loading SSH-agent context."
+  tput setaf 6
+  echo "Starting ssh-agent"
+  ssh-agent -s | head -n -1 > $SSH_AGENT_FILE
   source $SSH_AGENT_FILE
-  echo "INFO: Loading keys into agent process."
+
+  tput setaf 5
   ssh-add $SSH_KEYS
-  echo "INFO: SSH-agent startup complete."
+  tput setaf 2
+  echo "Complete"
 fi
+
+# Reset terminal colors
+tput sgr0
+
+# Get, increment, and update the number of ssh sessions
+echo $(($(<"$SSH_SESSIONS_FILE") + 1)) > "$SSH_SESSIONS_FILE"
